@@ -1,0 +1,60 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body {
+    width:100vw;
+    height:100vh;
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas: 
+    ". . header header . ."
+    ". . main main . ."
+    ". . main main . ."
+    ". . main main . ."
+    ". . main main . ."
+    "footer footer footer footer footer footer";
+}
+
+header {
+    grid-area:header;
+    align-self: center;
+    justify-self:center;
+}
+main{
+    grid-area:main;
+    background-color: aliceblue;
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(4,1fr);
+}
+#gameboard{
+    background-color: rgb(69, 124, 171); 
+    grid-column: 1 / span 4;
+    grid-row: 1 / span 4;
+}
+
+footer {
+    grid-area:footer;
+    align-self:end;
+    justify-self:center;
+}
+
+@media only screen and (max-width: 725px){
+    body {
+        width:100vw;
+        height:100vh;
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-areas: 
+        ".  header header . "
+        ".  main main . "
+        ".  main main . "
+        "footer footer footer footer";
+    }
+	/*Small smartphones [325px -> 425px]*/
+}
