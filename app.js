@@ -19,12 +19,24 @@ let snake = {
 };
 
 let gameState = {
-  apple: [10, 8],
+  apple: [[2, 2]],
   snake: snake,
   board: [0, 20],
 };
 
 function createGameBoard() {
+  gameState.apple.forEach((coordinate) => {
+    console.log(coordinate);
+    let coordinateY = coordinate[0];
+    let coordinateX = coordinate[1];
+
+    const appleSquare = document.createElement("div");
+    appleSquare.style.gridRowStart = coordinateX;
+    appleSquare.style.gridColumnStart = coordinateY;
+    appleSquare.classList.add("apple");
+
+    gameBoardContainer.appendChild(appleSquare);
+  });
   snake.snakeBody.forEach((segment) => {
     let segmentY = segment[0];
     let segmentX = segment[1];
@@ -38,66 +50,85 @@ function createGameBoard() {
   });
 }
 function snakeMove() {
-  snake.snakeBody.shift();
   let directionY = snake.nextDirection[0];
   let directionX = snake.nextDirection[1];
   let snakeHead = snake.snakeBody[snake.snakeBody.length - 1];
 
   let newSnakeHead = [];
+  snake.snakeBody.shift();
+
+  if (
+    snakeHead[0] === gameState.apple[0][0] &&
+    snakeHead[1] === gameState.apple[0][1]
+  ) {
+    snake.snakeBody.push([snakeHead]);
+    randomAppleGenerator();
+    console.log(snake.snakeBody);
+  }
   newSnakeHead.push(snakeHead[0] + directionY);
   newSnakeHead.push(snakeHead[1] + directionX);
 
   snake.snakeBody.push(newSnakeHead);
 }
 
-function checkCollision(){
-    let snakeHead = snake.snakeBody[snake.snakeBody.length-1];
-    console.log(snakeHead);
-    if (snakeHead[0] < gameState.board[0] ||snakeHead[0] > gameState.board[1]  || snakeHead[1] < gameState.board[0] || snakeHead[1] > gameState.board[1]){
-        alert("you lost");
-        startStopGame(enter);
-        
-    }
+function checkCollision() {
+  let snakeHead = snake.snakeBody[snake.snakeBody.length - 1];
+  console.log(snakeHead);
+  let duplicate = 0;
+  if (
+    snakeHead[0] < gameState.board[0] ||
+    snakeHead[0] > gameState.board[1] ||
+    snakeHead[1] < gameState.board[0] ||
+    snakeHead[1] > gameState.board[1]
+  ) {
+    alert("you lost");
+    startStopGame(enter);
+  }
+  //   snake.snakeBody.forEach(segment => {
+  //       console.log(segment.length-1);
+  //       for (let i=0; i< segment.length-1; i++){
+  //       if (snakeHead[i] === segment[i]){
+  //           duplicate++;
+  //           if (duplicate == 2){
+  //               alert("you lost");
+  //               startStopGame(enter);
+  //           }
+  //       }}
+  //   })
+}
+
+function randomAppleGenerator() {
+  let randomNum = Math.floor(math.Random() * 20);
 }
 
 function tick() {
   // this is an incremental change that happens to the state every time you update...
   gameBoardContainer.innerHTML = "";
   snakeMove();
-  createGameBoard();
-  checkCollision();
   renderState();
 }
 function startStopGame(event) {
   if (event.key === up || event.key === down) {
-    console.log("it is going here instead");
     intervalTimer = setInterval(tick, 1000 / 10);
     document.removeEventListener("keyup", startStopGame); // as close to 30 frames per second as possible
   }
   if (event === enter) {
-    console.log("Enter made it here");
     clearInterval(intervalTimer);
-    console.log(intervalTimer)
-  //   intervalTimer = null;
   }
 }
 
 function renderState() {
+  createGameBoard();
+  checkCollision();
   // debugger;
 }
 
 document.addEventListener("keyup", startStopGame);
-// now you might have things like
+
 document.addEventListener("keydown", function (event) {
-  // here you might read which key was pressed and update the state accordingly
-  // console.log(event);
-  let lastkey;
-  // console.log(lastkey)
   switch (event.key) {
     case up:
       snake.nextDirection = [0, -1];
-      lastkey = up;
-      console.log("this worked: ", up);
       break;
     case down:
       snake.nextDirection = [0, 1];
@@ -118,4 +149,3 @@ document.addEventListener("keydown", function (event) {
 });
 
 createGameBoard();
-// snakeMove();
