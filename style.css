@@ -28,13 +28,17 @@ main{
     grid-area:main;
     background-color: aliceblue;
     display:grid;
-    grid-template-columns: repeat(4,1fr);
-    grid-template-rows: repeat(4,1fr);
+    grid-template-columns: repeat(20,1fr);
+    grid-template-rows: repeat(20,1fr);
+    border:1px solid black;
 }
-#gameboard{
-    background-color: rgb(69, 124, 171); 
-    grid-column: 1 / span 4;
-    grid-row: 1 / span 4;
+
+.snake{
+    background-color: rgb(78, 177, 60);
+    border: 1px solid black;
+    /* width:10px;
+    height:10px; */
+    /* display: inline-block; */
 }
 
 footer {
