@@ -1,4 +1,6 @@
 const gameBoardContainer = document.getElementById("gameboard-container");
+const currentScoreElement = document.getElementById("current-score");
+const highScoreElement = document.getElementById("high-score");
 const left = "ArrowLeft";
 const up = "ArrowUp";
 const right = "ArrowRight";
@@ -6,6 +8,8 @@ const down = "ArrowDown";
 const enter = "Enter";
 let gameStart = false;
 let intervalTimer;
+let highScore = 0;
+let currentScore = 0;
 
 let snake = {
   // snakeBody: [y, x]
@@ -19,14 +23,15 @@ let snake = {
 };
 
 let gameState = {
-  apple: [[2, 2]],
+  apple: [[10, 3]],
   snake: snake,
   board: [0, 20],
+  speed: 10,
 };
 
 function createGameBoard() {
   gameState.apple.forEach((coordinate) => {
-    console.log(coordinate);
+    // console.log(coordinate);
     let coordinateY = coordinate[0];
     let coordinateX = coordinate[1];
 
@@ -49,6 +54,10 @@ function createGameBoard() {
     gameBoardContainer.appendChild(snakeSquare);
   });
 }
+function displayScore() {
+    currentScoreElement.innerHTML = `CURRENT SCORE: ${currentScore} `;
+    highScoreElement.innerHTML = `HIGH SCORE: ${highScore}`;
+}
 function snakeMove() {
   let directionY = snake.nextDirection[0];
   let directionX = snake.nextDirection[1];
@@ -61,9 +70,12 @@ function snakeMove() {
     snakeHead[0] === gameState.apple[0][0] &&
     snakeHead[1] === gameState.apple[0][1]
   ) {
-    snake.snakeBody.push([snakeHead]);
+    snake.snakeBody.unshift([gameState.apple[0]]);
     randomAppleGenerator();
-    console.log(snake.snakeBody);
+    gameState.speed += 0.25;
+    currentScore++;
+    displayScore();
+    // console.log(snake.snakeBody);
   }
   newSnakeHead.push(snakeHead[0] + directionY);
   newSnakeHead.push(snakeHead[1] + directionX);
@@ -73,8 +85,6 @@ function snakeMove() {
 
 function checkCollision() {
   let snakeHead = snake.snakeBody[snake.snakeBody.length - 1];
-  console.log(snakeHead);
-  let duplicate = 0;
   if (
     snakeHead[0] < gameState.board[0] ||
     snakeHead[0] > gameState.board[1] ||
@@ -84,21 +94,27 @@ function checkCollision() {
     alert("you lost");
     startStopGame(enter);
   }
-  //   snake.snakeBody.forEach(segment => {
-  //       console.log(segment.length-1);
-  //       for (let i=0; i< segment.length-1; i++){
-  //       if (snakeHead[i] === segment[i]){
-  //           duplicate++;
-  //           if (duplicate == 2){
-  //               alert("you lost");
-  //               startStopGame(enter);
-  //           }
-  //       }}
-  //   })
+  let snakeHeadDup = snakeHead;
+  console.log(snakeHeadDup);
+
+  for (let i = 0; i < snake.snakeBody.length - 1; i++) {
+    let compArr = [snakeHead];
+    if (
+      snake.snakeBody[i][0] === compArr[0][0] &&
+      snake.snakeBody[i][1] === compArr[0][1]
+    ) {
+      alert("you lost");
+      startStopGame("Enter");
+    }
+  }
 }
 
+
 function randomAppleGenerator() {
-  let randomNum = Math.floor(math.Random() * 20);
+  let randomY = Math.floor(Math.random() * 20) + 1;
+  let randomX = Math.floor(Math.random() * 20) + 1;
+
+  return (gameState.apple[0] = [randomY, randomX]);
 }
 
 function tick() {
@@ -109,11 +125,12 @@ function tick() {
 }
 function startStopGame(event) {
   if (event.key === up || event.key === down) {
-    intervalTimer = setInterval(tick, 1000 / 10);
+    intervalTimer = setInterval(tick, 1000 / gameState.speed);
     document.removeEventListener("keyup", startStopGame); // as close to 30 frames per second as possible
   }
   if (event === enter) {
     clearInterval(intervalTimer);
+    playAgain();
   }
 }
 
@@ -125,20 +142,32 @@ function renderState() {
 
 document.addEventListener("keyup", startStopGame);
 
+let lastCoordinate = [0, 0];
 document.addEventListener("keydown", function (event) {
   switch (event.key) {
     case up:
+      console.log("up, lastCoordinate: ", lastCoordinate);
+      if (lastCoordinate[1] !== 0) break;
+
       snake.nextDirection = [0, -1];
+      lastCoordinate = [0, -1];
       break;
     case down:
+      console.log("down last Coordinate: ", lastCoordinate);
+      if (lastCoordinate[1] !== 0) break;
+
       snake.nextDirection = [0, 1];
-      lastkey = down;
+      lastCoordinate = [0, 1];
       break;
     case right:
+      if (lastCoordinate[0] !== 0) break;
       snake.nextDirection = [1, 0];
+      lastCoordinate = [1, 0];
       break;
     case left:
+      if (lastCoordinate[0] !== 0) break;
       snake.nextDirection = [-1, 0];
+      lastCoordinate = [-1, 0];
       break;
     case enter:
       startStopGame(event.key), console.log("case Enter: ");
@@ -148,4 +177,20 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
+function playAgain() {
+    gameBoardContainer.innerHTML = "";
+    gameState.apple = [[10, 3]];
+    snake.snakeBody = [
+        [7, 10],
+        [8, 10],
+        [9, 10],
+        [10, 10],
+      ];
+      highScore = currentScore;
+      currentScore = 0;
+      displayScore();
+    createGameBoard();
+    gameState.speed = 10;
+    document.addEventListener("keyup", startStopGame);
+}
 createGameBoard();

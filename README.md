@@ -8,17 +8,21 @@
     Done!
 
 - have the snake grow correctly when it eats the apple
-
+    Done!
 - have the game end if the snake tries to eat itself
-
+    Done!
 - have the game end if the snake runs into a wall
     Done!
 
 - see how long my snake was when the game ended
+    Done! ?
 
 - start the game over without having to reset the browser
+    Done!
 
 # Nice-To-Haves
 - can set the difficulty (speed of snake)
+    Done kind of. This starts at a set speed and increases as you eat more apples.
 
 - can keep track of my stats (maximum points, average points, etc.) between games
+    Done!
