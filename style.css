@@ -1,20 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=Varela+Round&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=Varela+Round&display=swap");
 
 * {
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    width:100vw;
-    height:100vh;
-    display:grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(7, 1fr);
-    grid-template-areas: 
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  grid-template-areas:
     ". . header header . ."
     ". . main main . ."
     ". again main main score ."
@@ -23,147 +22,168 @@ body {
     ". . start start . ."
     "footer footer footer footer footer footer";
 
-    background-color: #A9B6F8;
-    font-family: 'Varela Round', sans-serif;
+  background-color: #a9b6f8;
+  font-family: "Varela Round", sans-serif;
 }
 
 header {
-    grid-area:header;
-    align-self: center;
-    justify-self:center;
-    font-family: 'Bebas Neue', cursive;
-    letter-spacing: .4rem;
-    font-size: 1.4rem;
+  grid-area: header;
+  align-self: center;
+  justify-self: center;
+  font-family: "Bebas Neue", cursive;
+  letter-spacing: 0.4rem;
+  font-size: 1.4rem;
 }
 
-#score-board{
-    font-family: 'Bebas Neue', cursive;
-    font-size: 2rem;
-    grid-area:score;
+#score-board {
+  font-family: "Bebas Neue", cursive;
+  font-size: 2rem;
+  grid-area: score;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+#play-again-section {
+  position: fixed;
+  left: 38%;
+  top: 35%;
+  background-color: #A9B6F8;
+  width: 30rem;
+  height: 20rem;
+  display: none;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  box-shadow:-3px 5px 10px 11px rgba(135, 105, 141, 0.807);
+  border: none;
+}
+
+#play-again-button {
+  width: 8rem;
+  height: 4rem;
+  background-color: transparent;;
+  border: none;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#play-again-button:hover {
+    box-shadow:-6px 6px 7px 0px rgb(0 0 0 / 47%);
+  background-color:#9a93d9;
+  animation-name:changeButton;
+  animation-duration:.2s;
+}
+main {
+  grid-area: main;
+  background-color: aliceblue;
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  border: 1px solid black;
+  border-radius: 2%;
+  background-color: #c8b0f0;
+
+  -webkit-box-shadow: -8px 5px 9px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: -8px 5px 9px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: -8px 5px 9px 0px rgba(77, 62, 84, 0.5);
+}
+
+.snake {
+  background-color: rgb(78, 177, 60);
+  border: 1px solid black;
+}
+
+.apple {
+  background-color: red;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+#start-game-section {
+  grid-area: start;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  justify-content: space-around;
+  align-items: center;
+  margin-top:1rem;
+}
+#start-game-button {
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  margin: 1rem;
+  border-style: none;
+  cursor: pointer;
+  font-weight:bold;
+  font-size:1rem;
+}
+
+@keyframes changeButton {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    box-shadow: -6px 6px 7px 0px rgb(0 0 0 / 47%);
+    background-color: #9a93d9;
+    border-style: none;
+  }
+}
+#start-game-button:hover {
+    box-shadow: -6px 6px 7px 0px rgb(0 0 0 / 47%);
+  animation-name: changeButton;
+  animation-duration: 0.2s;
+  background-color: #9a93d9;
+  border-style: none;
+}
+
+footer {
+  grid-area: footer;
+  align-self: end;
+  justify-self: center;
+}
+
+@media only screen and (max-width: 725px) {
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas:
+      ".  header header . "
+      ".  main main . "
+      ".  main main . "
+      ". score score ."
+      ". start start ."
+      "footer footer footer footer";
+  }
+  #score-board {
+    grid-area: score;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
-}
-#play-again-section{
+  }
+  #play-again-section {
     position: fixed;
-    left: 38%;
-    top: 35%;
-    background-color: rgb(156, 215, 215);
-    width: 30rem;
-    height:20rem;
-    display: none;
+    left: 30%;
+    top: 20%;
+    background-color: silver;
+    width: 10rem;
+    height: 10rem;
+    display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-
-    border: 1px solid black;
-
-
-}
-
-#play-again-button{
-    width:8rem;
-    height:4rem;
-    background-color: #C8B0F0;
-    border: none;
-}
-
-#play-again-button:hover{
-    border:1px solid black;
-
-}
-main{
-    grid-area:main;
-    background-color: aliceblue;
-    display:grid;
-    grid-template-columns: repeat(20,1fr);
-    grid-template-rows: repeat(20,1fr);
-    border:1px solid black;
-    border-radius: 2%;
-    background-color:#C8B0F0;
-
-    -webkit-box-shadow: -8px 5px 9px 0px rgba(0,0,0,0.5);
--moz-box-shadow: -8px 5px 9px 0px rgba(0,0,0,0.5);
-box-shadow: -8px 5px 9px 0px rgba(77, 62, 84, 0.5);
-}
-
-.snake{
-    background-color: rgb(78, 177, 60);
-    border: 1px solid black;
-}
-
-.apple{
-    background-color: red;
-    border: 1px solid black;
-    border-radius: 50%;
-}
-
-#start-game-section{
+  }
+  #start-game-section {
     grid-area: start;
     display: flex;
     flex-direction: column;
     align-content: flex-end;
     justify-content: space-around;
     align-items: center;
-}
-#start-game-button{
-    width:10rem;
-    height:3rem;
-    background-color:transparent;
-    margin:1rem;
-}
-#start-game-button:hover{
-    background-color:#9A93D9
-}
-
-footer {
-    grid-area:footer;
-    align-self:end;
-    justify-self:center;
-}
-
-@media only screen and (max-width: 725px){
-    body {
-        width:100vw;
-        height:100vh;
-        display:grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(6, 1fr);
-        grid-template-areas: 
-        ".  header header . "
-        ".  main main . "
-        ".  main main . "
-        ". score score ."
-        ". start start ."
-        "footer footer footer footer";
-    }
-    #score-board{
-        grid-area:score;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
-    #play-again-section{
-        position: fixed;
-        left: 30%;
-        top: 20%;
-        background-color: silver;
-        width: 10rem;
-        height:10rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-    #start-game-section{
-        grid-area: start;
-        display: flex;
-        flex-direction: column;
-        align-content: flex-end;
-        justify-content: space-around;
-        align-items: center;
-    }
-
+  }
 }
