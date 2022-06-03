@@ -1,4 +1,3 @@
-
 const gameBoardContainer = document.getElementById("gameboard-container");
 const currentScoreElement = document.getElementById("current-score");
 const highScoreElement = document.getElementById("high-score");
@@ -16,6 +15,26 @@ let highScore = 0;
 let currentScore = 0;
 let eatSound;
 let dieSound;
+let backgroundMusic;
+let highScoreSound;
+let firstTime;
+let muteButton = document.getElementById("mute-music-button");
+let muted = false;  
+
+function sound(src) {
+  this.sound = document.createElement("audio");
+  this.sound.src = src;
+  this.sound.setAttribute("preload", "auto");
+  this.sound.setAttribute("controls", "none");
+  this.sound.style.display = "none";
+  document.body.appendChild(this.sound);
+  this.play = function () {
+    this.sound.play();
+  };
+  this.stop = function () {
+    this.sound.pause();
+  };
+}
 
 let snake = {
   // snakeBody: [y, x]
@@ -37,7 +56,6 @@ let gameState = {
 
 function createGameBoard() {
   gameState.apple.forEach((coordinate) => {
-    // console.log(coordinate);
     let coordinateY = coordinate[0];
     let coordinateX = coordinate[1];
 
@@ -87,6 +105,7 @@ function snakeMove() {
   newSnakeHead.push(snakeHead[0] + directionY);
   newSnakeHead.push(snakeHead[1] + directionX);
 
+
   snake.snakeBody.push(newSnakeHead);
 }
 
@@ -101,8 +120,6 @@ function checkCollision() {
     dieSound.play();
     stopGame();
   }
-  let snakeHeadDup = snakeHead;
-  console.log(snakeHeadDup);
 
   for (let i = 0; i < snake.snakeBody.length - 1; i++) {
     let compArr = [snakeHead];
@@ -130,13 +147,29 @@ function tick() {
   renderState();
 }
 function startGame(event) {
-  eatSound = new sound("snake_monch.wav");
-  dieSound = new sound("snake_die.wav");
+  if (firstTime){
+    backgroundMusic = new sound("cirque de chats3.mp3");
+    backgroundMusic.sound.setAttribute("id", "background-music")
+    let backgroundMusicId = document.getElementById("background-music");
+    backgroundMusicId.volume = 0.07;
+    backgroundMusic.play();
+    eatSound = new sound("snake_monch.wav");
+    eatSound.sound.setAttribute("id", "eat-sound");
+    let eatSoundId = document.getElementById("eat-sound");
+    eatSoundId.volume = 0.3;
+    dieSound = new sound("snake_die.wav");
+    highScoreSound = new sound("high_score.wav");
+    highScoreSound.sound.setAttribute("id", "high-score-sound")
+    let highScoreSoundId = document.getElementById("high-score-sound");
+    highScoreSoundId.volume = 0.5;
+    firstTime = false;
+  }
+  
   console.log(event);
   if (event.key === up || event.key === down) {
     intervalTimer = setInterval(tick, 1000 / gameState.speed);
-    document.removeEventListener("keyup", startGame); 
-    startGameButton.removeEventListener("click", startGame);// as close to 30 frames per second as possible
+    document.removeEventListener("keyup", startGame);
+    startGameButton.removeEventListener("click", startGame); // as close to 30 frames per second as possible
   }
   if (event.target.id === "start-game-button") {
     intervalTimer = setInterval(tick, 1000 / gameState.speed);
@@ -145,7 +178,7 @@ function startGame(event) {
   }
 }
 
-function stopGame(){
+function stopGame() {
   clearInterval(intervalTimer);
   playAgain();
 }
@@ -195,6 +228,10 @@ document.addEventListener("keydown", function (event) {
 });
 
 function playAgain() {
+  if (currentScore > highScore) {
+    highScore = currentScore;
+    highScoreSound.play();
+  }
   playAgainElement.style.display = "flex";
   playAgainButton.addEventListener("click", function () {
     playAgainElement.style.display = "none";
@@ -206,10 +243,8 @@ function playAgain() {
       [9, 10],
       [10, 10],
     ];
-    snake.nextDirection = [1,0];
-    if (currentScore > highScore) {
-      highScore = currentScore;
-    }
+    snake.nextDirection = [1, 0];
+
     currentScore = 0;
     displayScore();
     createGameBoard();
@@ -220,18 +255,21 @@ function playAgain() {
   });
 }
 
-function sound(src) {
-  this.sound = document.createElement("audio");
-  this.sound.src = src;
-  this.sound.setAttribute("preload", "auto");
-  this.sound.setAttribute("controls", "none");
-  this.sound.style.display = "none";
-  document.body.appendChild(this.sound);
-  this.play = function(){
-    this.sound.play();
+muteButton.addEventListener("click", function(){
+  muted = !muted;
+  console.log("click")
+  muteButton.classList.toggle("muted");
+  let musicId = document.getElementById("background-music");
+  if (muted){
+  musicId.volume = 0;
+  } else {
+    musicId.volume = 0.07;
   }
-  this.stop = function(){
-    this.sound.pause();
-  }
-}
+
+})
+
+document.addEventListener("DOMContentLoaded", function() {
+  firstTime = true;
+});
+
 createGameBoard();
