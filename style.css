@@ -44,48 +44,48 @@ header {
   align-items: center;
   flex-direction: column;
 }
-#mute-music-button{
-    width: 10rem;
-    height: 3rem;
-    background-color: transparent;
-    margin: 1rem;
-    border-style: none;
-    cursor: pointer;
-    font-weight:bold;
-    font-size:1rem;
-  }
+#mute-music-button {
+  width: 10rem;
+  height: 3rem;
+  background-color: transparent;
+  margin: 1rem;
+  border-style: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
 .muted {
-    text-decoration: line-through;
+  text-decoration: line-through;
 }
 #play-again-section {
   position: fixed;
   left: 38%;
   top: 35%;
-  background-color: #A9B6F8;
+  background-color: #a9b6f8;
   width: 30rem;
   height: 20rem;
   display: none;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  box-shadow:-3px 5px 10px 11px rgba(135, 105, 141, 0.807);
+  box-shadow: -3px 5px 10px 11px rgba(135, 105, 141, 0.807);
   border: none;
 }
 
 #play-again-button {
   width: 8rem;
   height: 4rem;
-  background-color: transparent;;
+  background-color: transparent;
   border: none;
-  font-weight:bold;
-  cursor:pointer;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #play-again-button:hover {
-    box-shadow:-6px 6px 7px 0px rgb(0 0 0 / 47%);
-  background-color:#9a93d9;
-  animation-name:changeButton;
-  animation-duration:.2s;
+  box-shadow: -6px 6px 7px 0px rgb(0 0 0 / 47%);
+  background-color: #9a93d9;
+  animation-name: changeButton;
+  animation-duration: 0.2s;
 }
 main {
   grid-area: main;
@@ -106,10 +106,15 @@ main {
   background-color: rgb(78, 177, 60);
   border: 1px solid black;
 }
-.snake-head{
-    background: rgb(78,177,60);
-background: linear-gradient(87deg, rgba(78,177,60,1) 0%, rgba(61,156,43,1) 48%, rgba(89,150,112,1) 88%, rgba(250,0,0,1) 100%);
-
+.snake-head {
+  background: rgb(78, 177, 60);
+  background: linear-gradient(
+    87deg,
+    rgba(78, 177, 60, 1) 0%,
+    rgba(61, 156, 43, 1) 48%,
+    rgba(89, 150, 112, 1) 88%,
+    rgba(250, 0, 0, 1) 100%
+  );
 }
 
 .apple {
@@ -125,7 +130,7 @@ background: linear-gradient(87deg, rgba(78,177,60,1) 0%, rgba(61,156,43,1) 48%, 
   align-content: flex-end;
   justify-content: space-around;
   align-items: center;
-  margin-top:1rem;
+  margin-top: 1rem;
 }
 #start-game-button {
   width: 10rem;
@@ -134,8 +139,8 @@ background: linear-gradient(87deg, rgba(78,177,60,1) 0%, rgba(61,156,43,1) 48%, 
   margin: 1rem;
   border-style: none;
   cursor: pointer;
-  font-weight:bold;
-  font-size:1rem;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 @keyframes changeButton {
@@ -148,8 +153,9 @@ background: linear-gradient(87deg, rgba(78,177,60,1) 0%, rgba(61,156,43,1) 48%, 
     border-style: none;
   }
 }
-#start-game-button:hover, #mute-music-button:hover {
-    box-shadow: -6px 6px 7px 0px rgb(0 0 0 / 47%);
+#start-game-button:hover,
+#mute-music-button:hover {
+  box-shadow: -6px 6px 7px 0px rgb(0 0 0 / 47%);
   animation-name: changeButton;
   animation-duration: 0.2s;
   background-color: #9a93d9;

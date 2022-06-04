@@ -19,7 +19,7 @@ let backgroundMusic;
 let highScoreSound;
 let firstTime;
 let muteButton = document.getElementById("mute-music-button");
-let muted = false;  
+let muted = false;
 
 function sound(src) {
   this.sound = document.createElement("audio");
@@ -105,7 +105,6 @@ function snakeMove() {
   newSnakeHead.push(snakeHead[0] + directionY);
   newSnakeHead.push(snakeHead[1] + directionX);
 
-
   snake.snakeBody.push(newSnakeHead);
 }
 
@@ -147,9 +146,9 @@ function tick() {
   renderState();
 }
 function startGame(event) {
-  if (firstTime){
+  if (firstTime) {
     backgroundMusic = new sound("cirque de chats3.mp3");
-    backgroundMusic.sound.setAttribute("id", "background-music")
+    backgroundMusic.sound.setAttribute("id", "background-music");
     let backgroundMusicId = document.getElementById("background-music");
     backgroundMusicId.volume = 0.07;
     backgroundMusic.play();
@@ -159,12 +158,12 @@ function startGame(event) {
     eatSoundId.volume = 0.3;
     dieSound = new sound("snake_die.wav");
     highScoreSound = new sound("high_score.wav");
-    highScoreSound.sound.setAttribute("id", "high-score-sound")
+    highScoreSound.sound.setAttribute("id", "high-score-sound");
     let highScoreSoundId = document.getElementById("high-score-sound");
     highScoreSoundId.volume = 0.5;
     firstTime = false;
   }
-  
+
   console.log(event);
   if (event.key === up || event.key === down) {
     intervalTimer = setInterval(tick, 1000 / gameState.speed);
@@ -255,20 +254,19 @@ function playAgain() {
   });
 }
 
-muteButton.addEventListener("click", function(){
+muteButton.addEventListener("click", function () {
   muted = !muted;
-  console.log("click")
+  console.log("click");
   muteButton.classList.toggle("muted");
   let musicId = document.getElementById("background-music");
-  if (muted){
-  musicId.volume = 0;
+  if (muted) {
+    musicId.volume = 0;
   } else {
     musicId.volume = 0.07;
   }
+});
 
-})
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   firstTime = true;
 });
 
