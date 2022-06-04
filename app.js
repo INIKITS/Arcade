@@ -20,6 +20,7 @@ let initialGameState = {
   intervalTimer: null,
   firstTime: true,
   currentScore: 0,
+  snakeStart: [1,0],
 };
 
 let eatSound;
@@ -103,7 +104,9 @@ function snakeMove() {
     snakeHead[0] === gameState.apple[0][0] &&
     snakeHead[1] === gameState.apple[0][1]
   ) {
-    eatSound.play();
+      eatSound.play();
+
+
     snake.snakeBody.unshift([gameState.apple[0]]);
     randomAppleGenerator();
 
@@ -264,6 +267,7 @@ function resetGame() {
   createGameBoard();
   gameState.speed = 10;
   lastCoordinate = [0, 0];
+  snake.nextDirection = initialGameState.snakeStart;
   document.addEventListener("keyup", startGame);
   startGameButton.addEventListener("click", startGame);
 }
