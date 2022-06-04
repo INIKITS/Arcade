@@ -6,6 +6,14 @@
   padding: 0;
   box-sizing: border-box;
 }
+header {
+    grid-area: header;
+    align-self: center;
+    justify-self: center;
+    font-family: "Bebas Neue", cursive;
+    letter-spacing: 0.4rem;
+    font-size: 1.4rem;
+  }
 
 body {
   width: 100vw;
@@ -26,14 +34,6 @@ body {
   font-family: "Varela Round", sans-serif;
 }
 
-header {
-  grid-area: header;
-  align-self: center;
-  justify-self: center;
-  font-family: "Bebas Neue", cursive;
-  letter-spacing: 0.4rem;
-  font-size: 1.4rem;
-}
 
 #score-board {
   font-family: "Bebas Neue", cursive;

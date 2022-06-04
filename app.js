@@ -4,23 +4,27 @@ const highScoreElement = document.getElementById("high-score");
 const playAgainElement = document.getElementById("play-again-section");
 const playAgainButton = document.getElementById("play-again-button");
 const startGameButton = document.getElementById("start-game-button");
+const muteButton = document.getElementById("mute-music-button");
+
 const left = "ArrowLeft";
 const up = "ArrowUp";
 const right = "ArrowRight";
 const down = "ArrowDown";
 const enter = "Enter";
+
 let gameStart = false;
+let muted = false;
 let intervalTimer;
 let highScore = 0;
 let currentScore = 0;
+let firstTime;
+
 let eatSound;
 let dieSound;
 let backgroundMusic;
 let highScoreSound;
-let firstTime;
-let muteButton = document.getElementById("mute-music-button");
-let muted = false;
 
+// this handles sound elements
 function sound(src) {
   this.sound = document.createElement("audio");
   this.sound.src = src;
@@ -49,12 +53,12 @@ let snake = {
 
 let gameState = {
   apple: [[10, 3]],
-  snake: snake,
   board: [0, 20],
   speed: 10,
 };
 
 function createGameBoard() {
+  // placing apple on board
   gameState.apple.forEach((coordinate) => {
     let coordinateY = coordinate[0];
     let coordinateX = coordinate[1];
@@ -66,6 +70,8 @@ function createGameBoard() {
 
     gameBoardContainer.appendChild(appleSquare);
   });
+
+  // placing snake body segments on board
   snake.snakeBody.forEach((segment) => {
     let segmentY = segment[0];
     let segmentX = segment[1];
@@ -78,10 +84,7 @@ function createGameBoard() {
     gameBoardContainer.appendChild(snakeSquare);
   });
 }
-function displayScore() {
-  currentScoreElement.innerHTML = `CURRENT SCORE: ${currentScore} `;
-  highScoreElement.innerHTML = `HIGH SCORE: ${highScore}`;
-}
+
 function snakeMove() {
   let directionY = snake.nextDirection[0];
   let directionX = snake.nextDirection[1];
@@ -90,6 +93,7 @@ function snakeMove() {
   let newSnakeHead = [];
   snake.snakeBody.shift();
 
+  // checking to see if snake is on top of apple coordinates
   if (
     snakeHead[0] === gameState.apple[0][0] &&
     snakeHead[1] === gameState.apple[0][1]
@@ -97,6 +101,8 @@ function snakeMove() {
     eatSound.play();
     snake.snakeBody.unshift([gameState.apple[0]]);
     randomAppleGenerator();
+
+    // increase speed each time snake eats an apple
     gameState.speed += 0.25;
     currentScore++;
     displayScore();
@@ -109,6 +115,7 @@ function snakeMove() {
 }
 
 function checkCollision() {
+  // checking to see if snake is running out of bounds of the board or if snake is eating itself
   let snakeHead = snake.snakeBody[snake.snakeBody.length - 1];
   if (
     snakeHead[0] < gameState.board[0] ||
@@ -140,31 +147,36 @@ function randomAppleGenerator() {
 }
 
 function tick() {
-  // this is an incremental change that happens to the state every time you update...
+  // clear game board every tick and render new positions of apple and snake
   gameBoardContainer.innerHTML = "";
   snakeMove();
   renderState();
 }
+
 function startGame(event) {
   if (firstTime) {
+    //initializing music elements and setting volume only when page is loaded first time
     backgroundMusic = new sound("cirque de chats3.mp3");
     backgroundMusic.sound.setAttribute("id", "background-music");
     let backgroundMusicId = document.getElementById("background-music");
     backgroundMusicId.volume = 0.07;
     backgroundMusic.play();
+
     eatSound = new sound("snake_monch.wav");
     eatSound.sound.setAttribute("id", "eat-sound");
     let eatSoundId = document.getElementById("eat-sound");
     eatSoundId.volume = 0.3;
+
     dieSound = new sound("snake_die.wav");
+
     highScoreSound = new sound("high_score.wav");
     highScoreSound.sound.setAttribute("id", "high-score-sound");
     let highScoreSoundId = document.getElementById("high-score-sound");
     highScoreSoundId.volume = 0.5;
+
     firstTime = false;
   }
 
-  console.log(event);
   if (event.key === up || event.key === down) {
     intervalTimer = setInterval(tick, 1000 / gameState.speed);
     document.removeEventListener("keyup", startGame);
@@ -185,9 +197,9 @@ function stopGame() {
 function renderState() {
   createGameBoard();
   checkCollision();
-  // debugger;
 }
 
+// add initial event listeners to start game
 document.addEventListener("keyup", startGame);
 startGameButton.addEventListener("click", startGame);
 
@@ -226,11 +238,18 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
+function displayScore() {
+  currentScoreElement.innerHTML = `CURRENT SCORE: ${currentScore} `;
+  highScoreElement.innerHTML = `HIGH SCORE: ${highScore}`;
+}
+
 function playAgain() {
   if (currentScore > highScore) {
     highScore = currentScore;
     highScoreSound.play();
   }
+
+  // reveal play again and reset game if user chooses to play again
   playAgainElement.style.display = "flex";
   playAgainButton.addEventListener("click", function () {
     playAgainElement.style.display = "none";
@@ -256,7 +275,6 @@ function playAgain() {
 
 muteButton.addEventListener("click", function () {
   muted = !muted;
-  console.log("click");
   muteButton.classList.toggle("muted");
   let musicId = document.getElementById("background-music");
   if (muted) {
