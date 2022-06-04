@@ -6,6 +6,8 @@ const playAgainButton = document.getElementById("play-again-button");
 const startGameButton = document.getElementById("start-game-button");
 const muteButton = document.getElementById("mute-music-button");
 
+// realized I could have made all of these sections below their own object to avoid global variables, may do this if I have time
+
 const left = "ArrowLeft";
 const up = "ArrowUp";
 const right = "ArrowRight";
@@ -17,7 +19,7 @@ let muted = false;
 let intervalTimer;
 let highScore = 0;
 let currentScore = 0;
-let firstTime;
+let firstTime = true;;
 
 let eatSound;
 let dieSound;
@@ -282,10 +284,6 @@ muteButton.addEventListener("click", function () {
   } else {
     musicId.volume = 0.07;
   }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  firstTime = true;
 });
 
 createGameBoard();
