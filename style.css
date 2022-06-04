@@ -16,8 +16,8 @@ body {
   grid-template-areas:
     ". . header header . ."
     ". . main main . ."
-    ". again main main score ."
-    ". again main main score ."
+    ". . main main score ."
+    ". . main main score ."
     ". . main main . ."
     ". . start start . ."
     "footer footer footer footer footer footer";
