@@ -106,16 +106,6 @@ main {
   background-color: rgb(78, 177, 60);
   border: 1px solid black;
 }
-.snake-head {
-  background: rgb(78, 177, 60);
-  background: linear-gradient(
-    87deg,
-    rgba(78, 177, 60, 1) 0%,
-    rgba(61, 156, 43, 1) 48%,
-    rgba(89, 150, 112, 1) 88%,
-    rgba(250, 0, 0, 1) 100%
-  );
-}
 
 .apple {
   background-color: red;
