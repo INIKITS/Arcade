@@ -164,6 +164,7 @@ function startGame(event) {
     backgroundMusic = new sound("cirque de chats3.mp3");
     backgroundMusic.sound.setAttribute("id", "background-music");
     let backgroundMusicId = document.getElementById("background-music");
+    backgroundMusicId.loop = true;
     backgroundMusicId.volume = 0.07;
     backgroundMusic.play();
 
