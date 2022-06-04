@@ -6,20 +6,21 @@ const playAgainButton = document.getElementById("play-again-button");
 const startGameButton = document.getElementById("start-game-button");
 const muteButton = document.getElementById("mute-music-button");
 
-// realized I could have made all of these sections below their own object to avoid global variables, may do this if I have time
+const direction = {
+  left: "ArrowLeft",
+  up: "ArrowUp",
+  right: "ArrowRight",
+  down: "ArrowDown",
+  enter: "Enter",
+};
 
-const left = "ArrowLeft";
-const up = "ArrowUp";
-const right = "ArrowRight";
-const down = "ArrowDown";
-const enter = "Enter";
-
-let gameStart = false;
-let muted = false;
-let intervalTimer;
-let highScore = 0;
-let currentScore = 0;
-let firstTime = true;;
+let initialGameState = {
+  gameStart: false,
+  muted: false,
+  intervalTimer: null,
+  firstTime: true,
+  currentScore: 0,
+};
 
 let eatSound;
 let dieSound;
@@ -57,6 +58,8 @@ let gameState = {
   apple: [[10, 3]],
   board: [0, 20],
   speed: 10,
+  highScore: 0,
+  currentScore: 0,
 };
 
 function createGameBoard() {
@@ -106,7 +109,7 @@ function snakeMove() {
 
     // increase speed each time snake eats an apple
     gameState.speed += 0.25;
-    currentScore++;
+    gameState.currentScore++;
     displayScore();
     // console.log(snake.snakeBody);
   }
@@ -156,7 +159,7 @@ function tick() {
 }
 
 function startGame(event) {
-  if (firstTime) {
+  if (initialGameState.firstTime) {
     //initializing music elements and setting volume only when page is loaded first time
     backgroundMusic = new sound("cirque de chats3.mp3");
     backgroundMusic.sound.setAttribute("id", "background-music");
@@ -176,10 +179,10 @@ function startGame(event) {
     let highScoreSoundId = document.getElementById("high-score-sound");
     highScoreSoundId.volume = 0.5;
 
-    firstTime = false;
+    initialGameState.firstTime = false;
   }
 
-  if (event.key === up || event.key === down) {
+  if (event.key === direction.up || event.key === direction.down) {
     intervalTimer = setInterval(tick, 1000 / gameState.speed);
     document.removeEventListener("keyup", startGame);
     startGameButton.removeEventListener("click", startGame); // as close to 30 frames per second as possible
@@ -208,25 +211,25 @@ startGameButton.addEventListener("click", startGame);
 let lastCoordinate = [0, 0];
 document.addEventListener("keydown", function (event) {
   switch (event.key) {
-    case up:
+    case direction.up:
       if (lastCoordinate[1] !== 0) break;
 
       snake.nextDirection = [0, -1];
       lastCoordinate = [0, -1];
       break;
-    case down:
+    case direction.down:
       if (lastCoordinate[1] !== 0) break;
 
       snake.nextDirection = [0, 1];
       lastCoordinate = [0, 1];
       break;
-    case right:
+    case direction.right:
       if (lastCoordinate[0] !== 0) break;
 
       snake.nextDirection = [1, 0];
       lastCoordinate = [1, 0];
       break;
-    case left:
+    case direction.left:
       if (lastCoordinate[0] !== 0) break;
 
       snake.nextDirection = [-1, 0];
@@ -241,45 +244,45 @@ document.addEventListener("keydown", function (event) {
 });
 
 function displayScore() {
-  currentScoreElement.innerHTML = `CURRENT SCORE: ${currentScore} `;
-  highScoreElement.innerHTML = `HIGH SCORE: ${highScore}`;
+  currentScoreElement.innerHTML = `CURRENT SCORE: ${gameState.currentScore} `;
+  highScoreElement.innerHTML = `HIGH SCORE: ${gameState.highScore}`;
+}
+
+function resetGame() {
+  playAgainElement.style.display = "none";
+  gameBoardContainer.innerHTML = "";
+  gameState.apple = [[10, 3]];
+  snake.snakeBody = [
+    [7, 10],
+    [8, 10],
+    [9, 10],
+    [10, 10],
+  ];
+  gameState.currentScore = initialGameState.currentScore;
+  displayScore();
+  createGameBoard();
+  gameState.speed = 10;
+  lastCoordinate = [0, 0];
+  document.addEventListener("keyup", startGame);
+  startGameButton.addEventListener("click", startGame);
 }
 
 function playAgain() {
-  if (currentScore > highScore) {
-    highScore = currentScore;
+  if (gameState.currentScore > gameState.highScore) {
+    gameState.highScore = gameState.currentScore;
     highScoreSound.play();
   }
 
   // reveal play again and reset game if user chooses to play again
   playAgainElement.style.display = "flex";
-  playAgainButton.addEventListener("click", function () {
-    playAgainElement.style.display = "none";
-    gameBoardContainer.innerHTML = "";
-    gameState.apple = [[10, 3]];
-    snake.snakeBody = [
-      [7, 10],
-      [8, 10],
-      [9, 10],
-      [10, 10],
-    ];
-    snake.nextDirection = [1, 0];
-
-    currentScore = 0;
-    displayScore();
-    createGameBoard();
-    gameState.speed = 10;
-    lastCoordinate = [0, 0];
-    document.addEventListener("keyup", startGame);
-    startGameButton.addEventListener("click", startGame);
-  });
+  playAgainButton.addEventListener("click", resetGame);
 }
 
 muteButton.addEventListener("click", function () {
-  muted = !muted;
+  initialGameState.muted = !initialGameState.muted;
   muteButton.classList.toggle("muted");
   let musicId = document.getElementById("background-music");
-  if (muted) {
+  if (initialGameState.muted) {
     musicId.volume = 0;
   } else {
     musicId.volume = 0.07;
